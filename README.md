@@ -39,19 +39,6 @@ Household_Pulse_data$income <- fct_recode(Household_Pulse_data$INCOME,
 
 Household_Pulse_data$income <- as.numeric(levels(Household_Pulse_data$income))[Household_Pulse_data$income]
 
-summary(Household_Pulse_data$SYMPTOMS)
-
-Household_Pulse_data$symptoms <- fct_recode(Household_Pulse_data$SYMPTOMS,
-                                            "1" = "had no covid symptoms although tested +",
-                                            "2" = "had mild Covid symptoms",
-                                            "3" = "had moderate Covid symptoms",
-                                            "4" = "had severe Covid symptoms")
-Household_Pulse_data$income <- fct_na_value_to_level(Household_Pulse_data$INCOME, level = "Missing")
-
-
-Household_Pulse_data$symptoms <- as.numeric(levels(Household_Pulse_data$symptoms))[Household_Pulse_data$symptoms]
-
-
 head(Household_Pulse_data$income)
  
 xtabs(formula = ~symptoms + LONGCOVID, data = Household_Pulse_data)
