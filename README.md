@@ -68,24 +68,82 @@ norm_variable <- function(X_in) {
   (X_in - min(X_in, na.rm = TRUE))/( max(X_in, na.rm = TRUE) - min(X_in, na.rm = TRUE)  )
 }
 ```
+**I am creating a new dataset where the income and symptoms are on the same scale**
 
+```
 data_use_prelim <- data.frame(norm_variable(data_hadcovid$income),norm_variable(data_hadcovid$symptoms))
+```
 
+**This code helps filter out incomplete data**
+
+```
 good_obs_data_use <- complete.cases(data_use_prelim,data_hadcovid$LONGCOVID)
+```
+
+**This clean dataset is ready for analysis, ensuring no missing or incomplete data will affect results**
+
+```
 dat_use <- subset(data_use_prelim,good_obs_data_use)
+```
+
+**This corresponds only to individuals with complete data in both datasets**
+
+```
 y_use <- subset(data_hadcovid$LONGCOVID,good_obs_data_use)
+```
 
+**For random number generation**
+
+```
 set.seed(12345)
-NN_obs <- sum(good_obs_data_use == 1)
-select1 <- (runif(NN_obs) < 0.8)
-train_data <- subset(dat_use,select1)
-test_data <- subset(dat_use,(!select1))
-cl_data <- y_use[select1]
-true_data <- y_use[!select1]
+```
 
+**How many complete cases I have in my dataset**
+
+```
+NN_obs <- sum(good_obs_data_use == 1)
+```
+
+**Randomly selecting around 80% of the data**
+
+```
+select1 <- (runif(NN_obs) < 0.8)
+```
+
+**This code creates a training dataset**
+
+```
+train_data <- subset(dat_use,select1)
+```
+
+**This code creates a test dataset called test_data that contains the other 20% of the data**
+
+```
+test_data <- subset(dat_use,(!select1))
+```
+
+**Create the label data for your training set**
+
+```
+cl_data <- y_use[select1]
+```
+
+**Not sure exactly what it means?**
+
+```
+true_data <- y_use[!select1]
+```
+
+**This will provide a summary of the cl_data variable**
+
+```
 summary(cl_data)
 summary(train_data)
+```
 
+**This loop helps test how the KNN model performs with different values of k (the number of neighbors) to find the optimal value**
+
+```
 for (indx in seq(1, 9, by= 2)) {
   pred_y <- knn3Train(train_data, test_data, cl_data, k = indx, l = 0, prob = FALSE, use.all = FALSE)
   num_correct_labels <- sum(pred_y == true_data)
