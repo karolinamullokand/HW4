@@ -1,6 +1,8 @@
 # HW4
 **Study group:** _Karolina & Jermaine_
 
+**Creating usual R environment**
+
 ```
 setwd("/Users/karolinamullokand/Desktop/ECO_B2000")
 load("Household_Pulse_data_ph4c2.RData")
@@ -12,7 +14,11 @@ library(ggplot2)
 library(caret)
 library(class)
 library(tidyverse)
+```
 
+#First Variable
+
+```
 Household_Pulse_data$SOCIAL2 <- fct_recode(Household_Pulse_data$SOCIAL2,
                                            "1" = "never",
                                            "2" = "rarely",
@@ -23,9 +29,10 @@ Household_Pulse_data$SOCIAL2 <- fct_recode(Household_Pulse_data$SOCIAL2,
 Household_Pulse_data$SOCIAL2 <- as.numeric(levels(Household_Pulse_data$SOCIAL2))[Household_Pulse_data$SOCIAL2]
 
 summary(Household_Pulse_data$INCOME)
+```
+#Second Variable
 
-#SECOND VARIABLE
-
+```
 Household_Pulse_data$income <- fct_recode(Household_Pulse_data$INCOME,
                                           "0" = "NA",
                                           "1" = "HH income less than $25k",
@@ -40,14 +47,27 @@ Household_Pulse_data$income <- fct_recode(Household_Pulse_data$INCOME,
 Household_Pulse_data$income <- as.numeric(levels(Household_Pulse_data$income))[Household_Pulse_data$income]
 
 head(Household_Pulse_data$income)
- 
+```
+
+**Creates a table that shows how often different symptoms are reported by people with and without long COVID in the dataset**
+
+```
 xtabs(formula = ~symptoms + LONGCOVID, data = Household_Pulse_data)
+```
+
+```
 data_hadcovid <- Household_Pulse_data %>% filter(HADCOVIDRV == "yes tested + or doc told had Covid")
 
 summary(data_hadcovid)
+```
+
+**We want to compare different variables that have different units**
+
+```
 norm_variable <- function(X_in) {
   (X_in - min(X_in, na.rm = TRUE))/( max(X_in, na.rm = TRUE) - min(X_in, na.rm = TRUE)  )
 }
+```
 
 data_use_prelim <- data.frame(norm_variable(data_hadcovid$income),norm_variable(data_hadcovid$symptoms))
 
