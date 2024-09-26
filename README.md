@@ -16,7 +16,7 @@ library(class)
 library(tidyverse)
 ```
 
-#First Variable
+**First Variable**
 
 ```
 Household_Pulse_data$SOCIAL2 <- fct_recode(Household_Pulse_data$SOCIAL2,
@@ -30,7 +30,8 @@ Household_Pulse_data$SOCIAL2 <- as.numeric(levels(Household_Pulse_data$SOCIAL2))
 
 summary(Household_Pulse_data$INCOME)
 ```
-#Second Variable
+
+**Second Variable**
 
 ```
 Household_Pulse_data$income <- fct_recode(Household_Pulse_data$INCOME,
